@@ -1,0 +1,28 @@
+{% extends 'dialogues/base.html'%}
+{% load staticfiles %}
+
+{% block title %} Home Visit Campaign {% endblock %}
+
+{% block maincontent %}
+
+
+
+<section>
+
+	<div class="row" style="margin-top:10px">
+		<div class="col-lg-2">
+			<div style="background:#2c3e50;padding-left:10px;padding-right:10px;">
+			{% include 'dialogues/choose_district_form.html' %}
+			</div>
+		</div>
+		<div class="col-lg-10" id="div_district_summary">
+			<div class="text-center">
+			<h4>Select a district first : ) </h4>
+			</div>
+		</div>
+	</div>
+
+
+</section>
+{% endblock %}
+~

@@ -1,0 +1,27 @@
+
+
+<div id="total_piechart" style="width:fill-parent;padding-left:5px;padding-right:5px"></div>
+
+
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+  google.charts.load('current', {'packages':['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
+  function drawChart() {
+
+	var data = google.visualization.arrayToDataTable([
+	  ['Area', 'Dialogues so far'],
+	  {% for area in areawise_total_count %}
+		['{{area.name}}', {{area.region_count}}],
+	  {% endfor %}
+	]);
+
+	var options = {
+	  title: 'Total Dialogues per Area'
+	};
+
+	var chart = new google.visualization.PieChart(document.getElementById('total_piechart'));
+	chart.draw(data, options);
+  }
+</script>
+

@@ -1,0 +1,146 @@
+{% extends 'dialogues/base.html'%}
+{% load staticfiles %}
+
+{% block title %} Home - Dialogues for Peace! {% endblock %}
+
+{% block maincontent %}
+
+<div class="container">
+
+	<div class="row">
+		<div class="col-md-12">
+			<div class="alert alert-info"><h4>Leader's Dashboard</h4></div>
+			<div class="tabs-x tabs-left tabs-krajee">
+				<ul id="myTab-3" class="nav nav-tabs" role="tablist">
+					<li class="active"><a href="#summary" role="tab-kv" data-toggle="tab" aria-expanded="true"><i class="glyphicon glyphicon-user"></i>
+						Dialogues Summary</a></li>
+					<li><a href="#hv_summary" role="tab-kv" data-toggle="tab" aria-expanded="true"><i class="glyphicon glyphicon-user"></i>
+						Home visits summary</a></li>
+					<li class="dropdown">
+					<a href="#" id="myTabDrop-3" class="dropdown-toggle" data-toggle="dropdown" title="Downloads"><i class="glyphicon glyphicon-list-alt"></i> Reports <span class="caret"></span></a>
+					<ul class="dropdown-menu" role="menu" aria-labelledby="myTabDrop-1">
+						<li><a href="#dialogue_list" tabindex="-1" role="tab" data-toggle="tab" title="Total Dialogues List">
+							<i class="glyphicon glyphicon-chevron-right"></i> Total Dialogue List</a></li>
+						<li><a href="#per_chapter_list" tabindex="-1" role="tab" data-toggle="tab" title="Chapter-wise Dialogue List">
+							<i class="glyphicon glyphicon-chevron-right"></i> Chapter wise List </a></li>
+					</ul>
+					</li>
+				</ul>
+				<div id="myTabContent" class="tab-content" style="min-height:550px;border:solid 1px;padding:10px">
+					<div class="tab-pane fade active in"id="summary">
+						<div class="row">
+
+							<div class="col-lg-6">
+								{% include 'dialogues/table_district_counts.html' %}
+							</div>
+							<div class="col-lg-6">
+								{% include 'dialogues/chart_piechart.html' %}
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade"id="hv_summary">
+						<div class="row">
+							<div class="col-lg-6">
+								{% include 'dialogues/table_hv_district_counts.html' %}
+							</div>
+							<div class="col-lg-6">
+								{% include 'dialogues/chart_hv_piechart.html' %}
+							</div>
+						</div>
+					</div>
+
+					<div class="tab-pane fade" id="dialogue_list">
+						<p></p><h4>Reports >> Dialogue History</h4>
+
+
+						<p> Download in Excel Format, entire history of dialogues. </p>
+						<p></p><h5>Dialogue History for Period</h5>
+						<form method="get" action="/dialogues/download_dialogue_list_date_range/">
+
+							<div class="row control-group">
+								<div class="form-group col-xs-4 controls">
+									<label class="control-label">Start date</label>
+									<input type='text' name='start_date' class="form-control" id='datetimepicker1' />
+								</div>
+								<div class="form-group col-xs-4 controls">
+
+									<label class="control-label">End date</label>
+									<input type='text' name='end_date' class="form-control" id='datetimepicker2' />
+								</div>
+
+								<div class="form-group col-xs-4 controls">
+									<button type="submit" style="margin-top:25px" class="btn btn-success">Download</button>
+								</div>
+
+								<script src="/static/dialogues/js/jquery.js"></script>
+								<script type="text/javascript">
+									$(function () {
+											$('#datetimepicker1').datetimepicker({
+												format: 'DD-MM-YYYY'
+											});
+											$('#datetimepicker2').datetimepicker({
+												format: 'DD-MM-YYYY'
+											});
+										});
+										</script>
+									</div> <!-- row -->
+
+								</form>
+ 
+								<p></p><h5>Entire Dialogue History</h5>
+								<a class="btn btn-success btn-lg" href="/dialogues/download_entire_dialogue_list/" download="dialogue_list.xls"> Download Entire History</a>
+
+
+							</div>
+							<div class="tab-pane fade" id="per_chapter_list">
+								<p></p><h4>Reports » Chapter wise list</h4>
+								<form method="get" action="/dialogues/download_per_chapter_dialogue_list_date_range/">
+
+									<div class="row control-group">
+										<div class="form-group col-xs-4 controls">
+											<label class="control-label">Select Chapter</label>
+											<select name='chapter_id' class="form-control" id='chapter_select' >
+												<option value='0'> -Select- </option>
+												{% for chapter in all_chapter_list %}
+												<option value='{{chapter.id}}'>{{chapter.name}} </option>
+												{% endfor %}
+											</select>
+										</div>
+
+										<div class="form-group col-xs-4 controls">
+											<label class="control-label">Start date</label>
+											<input type='text' name='start_date' class="form-control" id='datetimepicker3' />
+										</div>
+										<div class="form-group col-xs-4 controls">
+
+											<label class="control-label">End date</label>
+											<input type='text' name='end_date' class="form-control" id='datetimepicker4' />
+										</div>
+
+										<div class="form-group col-xs-4 controls">
+											<button type="submit" style="margin-top:25px" class="btn btn-success">Download for range</button>
+										</div>
+
+										<script src="/static/dialogues/js/jquery.js"></script>
+										<script type="text/javascript">
+											$(function () {
+													$('#datetimepicker3').datetimepicker({
+														format: 'DD-MM-YYYY'
+													});
+													$('#datetimepicker4').datetimepicker({
+														format: 'DD-MM-YYYY'
+													});
+												});
+												</script>
+											</div> <!-- row -->
+
+										</form>
+
+									</div> <!---pane-->
+								</div> <!-- tab-content-->
+							</div> <!-- col-->
+						</div> <!-- row-->
+
+
+					</div> <!-- container-->
+				{%endblock %}

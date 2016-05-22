@@ -11,6 +11,7 @@ urlpatterns = [
 	url(r'^ajax_get_areas_in_ga/(?P<parent_id>\d+)/$', views.ajax_get_areas_in_ga),
 	url(r'^ajax_submit_new_dialogue/$', views.ajax_submit_new_dialogue),
 	url(r'^ajax_get_total_count/$', views.ajax_get_total_count),
+	url(r'^ajax_get_matching_district/$', views.ajax_get_matching_district),
 	url(r'^leaders_dashboard/$', views.leaders_dashboard),
 	url(r'^my_activities/$', views.my_activities),
 	url(r'^download_entire_dialogue_list/$', views.export_entire_dialogue_list_xls),

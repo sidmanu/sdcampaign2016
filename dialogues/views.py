@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect
+import json
 
 import datetime
 from django.core.mail import send_mail
@@ -133,6 +134,26 @@ def leaders_dashboard(request):
 	context['district_hv_count_zero_list'] = q.get_district_wise_hv_count_zero()
 	context['areawise_total_count'] = q.get_areawise_total_count()
 	return render(request, 'dialogues/leaders_dashboard.html', context)
+
+@csrf_exempt
+def ajax_get_matching_district(request):
+	mimetype= 'application/json'
+	dist_str= request.GET.get('dist_str','')
+	if len(dist_str) < 3:
+		data = []
+		return HttpResponse(data, mimetype)
+	districts = District.objects.filter(name__contains=dist_str)
+	results = {}
+	suggestions = []
+	for dist in districts:
+		dist_json = {}
+		dist_json['value'] = '%s (Chapter: %s)'%(dist.name, dist.parent.name) 
+		dist_json['data'] = dist.name
+		suggestions.append(dist_json)
+	results['suggestions'] = suggestions
+	data = json.dumps(results)		
+	return HttpResponse(data, mimetype)
+
 
 def ajax_hv_get_district_summary(request, district_id):
 	context = {}

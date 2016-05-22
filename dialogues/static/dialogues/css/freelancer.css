@@ -83,6 +83,8 @@ header {
     text-align: center;
     color: #fff;
     background: url("/static/dialogues/images/student-div.jpg") ;
+    background-position:center;
+    background-size:cover;
 }
 
 header .container {
@@ -93,6 +95,7 @@ header .container {
 header img {
     display: block;
     margin: 0 auto 20px;
+    border: 2px solid #eee;
 }
 
 header div counter {
@@ -154,6 +157,7 @@ header .intro-text .skills {
     text-transform: uppercase;
     font-weight: 700;
 	margin-bottom:100px;
+	border-bottom:2px solid #eee;
 }
 
 .navbar a:focus {
@@ -488,11 +492,11 @@ table.tablesorter {
 	font-size: 8pt;
 	width: 100%;
 	text-align: left;
-	border:1px solid black;
+	border:1px solid #eee;
 }
 table.tablesorter thead tr th, table.tablesorter tfoot tr th {
 	background-color: #e6EEEE;
-	border: 1px solid black;
+	border: 1px solid #eee;
 	font-size: 8pt;
 	padding: 4px;
 }
@@ -521,4 +525,16 @@ table.tablesorter thead tr .headerSortDown, table.tablesorter thead tr .headerSo
 background-color: #8dbdd8;
 }
 
+#counter_label {
+	background:white;
+	color:black;
+	font-size:2.5em;
+}
 
+
+.autocomplete-suggestions { border: 1px solid #999; background: #FFF; overflow: auto; }
+.autocomplete-suggestion { padding: 2px 5px; white-space: nowrap; overflow: hidden; }
+.autocomplete-selected { background: #F0F0F0; }
+.autocomplete-suggestions strong { font-weight: normal; color: #3399FF; }
+.autocomplete-group { padding: 2px 5px; }
+.autocomplete-group strong { display: block; border-bottom: 1px solid #000; }

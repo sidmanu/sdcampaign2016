@@ -1,4 +1,16 @@
-<form name="newDialogue" id="newDialogueForm" novalidate="" method="POST" action="/dialogues/submit_new_dialogue/" >
+<form name="newDialogue" id="newDialogueForm" novalidate="" method="POST" action="/dialogues/submit_new_dialogue/" style="padding-top:5px" >
+	<div class="row control-group">
+		<div class="form-group col-xs-12 floating-label-form-group-with-focus controls">
+			<label>Choose Region</label>
+			<select class="form-control" id="ga_select" placeholder="Region(Region)" data-validation-required-message="Choose GA">
+				<option value='0'> -Choose Region- </option>
+				{% for ga in ga_list %}
+				<option value='{{region.id}}'> {{region.name}} </option>
+				{%endfor %}
+			</select>
+		</div>
+	</div>
+
 	<div class="row control-group">
 		<div class="form-group col-xs-12 floating-label-form-group-with-focus controls">
 			<label>Choose GA</label>

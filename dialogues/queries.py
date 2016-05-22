@@ -99,6 +99,16 @@ def get_districts_in_chapter(id):
 def get_district_by_id(id):
 	return District.objects.get(id=id)
 
+def get_district_structure_string_by_id(id):
+	d = District.objects.get(id=id)
+	str = "%s > %s > %s > %s > %s"%(d.parent.parent.parent.parent.name,
+				d.parent.parent.parent.name,
+				d.parent.parent.name,
+				d.parent.name,
+				d.name)
+	return str
+
+
 def get_home_visits_list_by_email(email):
 	return HomeVisit.objects.filter(visitor_email=email)
 

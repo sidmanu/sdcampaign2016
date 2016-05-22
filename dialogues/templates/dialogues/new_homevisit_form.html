@@ -4,15 +4,75 @@
 	<h4>Record a Home visit!</h4>
 </div>
 <div class="row control-group">
-	<label>The person you visited</label>
-	<input type="text" class="form-control" placeholder="Friend's Name" name="friend_name" id="friend_name" required="" data-validation-required-message="Enter Friend's name.">
+	<label>The person you visited (use comma to separate multiple names)</label>
+	<input type="text" class="form-control" placeholder="Friend's Name" name="visited_name" id="visited_name" required="" data-validation-required-message="Enter Friend's name.">
+
+	<label id="visited_count"> </label>
 </div>
 <div class="row control-group">
-	<button type="submit" id="dialog_submit_button" class="btn;" style="background:#001a66;color:white;width:100%;margin-top:8px;">Record Home Visit</button>
+	<button type="submit" id="homevisit_submit_button" class="btn;" style="background:#001a66;color:white;width:100%;margin-top:8px;">Record Home Visit</button>
 </div>
 
 </div> <!-- column -->
 </div> <!-- row -->
 
+
+<script type="text/javascript">
+
+function update_homevisit_count() 
+{
+	var visited, count = 0 ;
+	visited = $(this).val();
+	if (visited.length > 1)
+		count = 1;
+	count += (visited.match(/,/g) || []).length;
+	$('#visited_count').text("Number of homevisits: "+count);
+
+}
+
+$('#visited_name').on('keyup keypress blur change', update_homevisit_count)
+
+function validate_hv_form()  {
+	if (!validate_form_common()) {
+		return false;
+	}
+	visited_name = $('#visited_name').val();
+	if (visited_name.length < 3) {
+			alert("Please check visited friend's name");
+			return false;
+	}
+	return true;
+}
+
+
+
+
+$("#homevisit_submit_button").click(function(event){
+	if (!validate_hv_form()) {
+		alert("Please check input data");
+		return false;
+	} else {
+		data = $("#dialogue_and_hv_form").serialize();
+		alert(data);
+	}
+    var submit_url = "dialogues/ajax_submit_new_home_visit/"; // the script where you handle the form input.
+	$.ajax({
+	   type: "POST",
+	   url: submit_url,
+	   data: $("#dialogue_and_hv_form").serialize(), // serializes the form's elements.
+	   success: function(data)
+	   {
+			   $('#dialogue_submit_response_message').html(data);
+			   $('#dialogue_submit_response_message').css('display','block');
+	   }
+	 });
+	event.preventDefault();
+	$("html, body").animate({ scrollTop: 0 }, "slow");	
+});
+
+
+
+
+</script>
 
 

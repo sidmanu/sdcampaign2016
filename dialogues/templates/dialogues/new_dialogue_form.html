@@ -4,15 +4,99 @@
 		<h4>Record a Dialogue!</h4>
 	</div>
 <div class="row control-group">
-	<label>New Friend you had a dialogue with</label>
+	<label>Friend(s) you had a dialogue with (use comma to separate multiple names)</label>
 	<input type="text" class="form-control" placeholder="Friend's Name" name="friend_name" id="friend_name" required="" data-validation-required-message="Enter Friend's name.">
+	<label id="friends_count"> </label>
 </div>
 <div class="row control-group">
 	<button type="submit" id="dialog_submit_button" class="btn;" style="background:#001a66;color:white;width:100%;margin-top:8px;">Record dialogue</button>
 </div>
 
+
+<div id="dialogue_submit_response_message"> </div>
 </div> <!-- column -->
 </div> <!-- row -->
+
+<script type="text/javascript">
+
+function update_dialogue_count() 
+{
+	var friend, count = 0 ;
+	friend = $(this).val();
+	if (friend.length > 1)
+		count = 1;
+	count += (friend.match(/,/g) || []).length;
+	$('#friends_count').text("Number of dialogues: "+count);
+
+}
+
+$('#friend_name').on('keyup keypress blur change', update_dialogue_count)
+
+
+function validate_form_common()  {
+		email_id = $('#member_email').val();
+		member_name = $('#member_name').val();
+		district_id = $('#district_id').val();
+    	var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    	if (!re.test(email_id)) {
+			alert("Please check email id");
+			return false;
+		}
+		if (member_name.length < 3) {
+			alert("Please check member's name");
+			return false;
+		}
+		if (!$.isNumeric(district_id)) {
+			alert("Please select district");
+			return false;
+		}
+		return true;
+}
+
+
+
+function validate_dialogue_form()  {
+	if (!validate_form_common()) {
+		return false;
+	}
+	friends_name = $('#friend_name').val();
+	if (friends_name.length < 3) {
+			alert("Please check friend's name");
+			return false;
+	}
+
+	return true;
+}
+
+
+
+$("#dialog_submit_button").click(function(event){
+	if (!validate_dialogue_form()) {
+		alert("Please check input data");
+		return false;
+	} else {
+		data = $("#dialogue_and_hv_form").serialize();
+		alert(data);
+	}
+    var submit_url = "dialogues/ajax_submit_new_dialogue/"; // the script where you handle the form input.
+	$.ajax({
+	   type: "POST",
+	   url: submit_url,
+	   data: $("#dialogue_and_hv_form").serialize(), // serializes the form's elements.
+	   success: function(data)
+	   {
+			   $('#dialogue_submit_response_message').html(data);
+			   $('#dialogue_submit_response_message').css('display','block');
+	   }
+	 });
+	event.preventDefault();
+	$("html, body").animate({ scrollTop: 0 }, "slow");	
+});
+
+
+
+
+</script>
 
 
 

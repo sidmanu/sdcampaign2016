@@ -32,68 +32,92 @@
 	<!-- Record Dialogue Section -->
 	<section id="record_new">
 	<div class="container">
-		<div class="row" style="margin-top:10px">
-			<div class="col-md-3" id="div_district_summary">
+		<form class="background:#0f3d88;" id="dialogue_and_hv_form">
+			<div class="row" style="margin-top:10px">
+				<div class="col-md-3" id="div_district_summary">
 
-				<form class="background:#0f3d88;" id="new_home_visit_form">
 					{%csrf_token %}
 
-		<div class="row control-group">
-			<label>Your name</label>
-			<input type="text" class="form-control" placeholder="Type your name" name="member_name" id="member_name" required="" data-validation-required-message="Enter member name.">
-		</div>
-<div class="row control-group">
-	<label>Your email</label>
-	<input type="email" class="form-control" placeholder="Type your email id" name="member_email" id="member_email" required="" data-validation-required-message="Please enter member's email address.">
-</div>
-	<div class="row control-group">
-			<label>Your District</label>
-			<input type="text" class="form-control" id="autocomplete" autocomplete="off" placeholder="Type your district name" name="member_name" id="member_name" required="" data-validation-required-message="Enter member name.">
-		</div>
+					<div class="row control-group">
+						<label>Your name</label>
+						<input type="text" class="form-control" placeholder="Type your name" name="member_name" id="member_name" required="" data-validation-required-message="Enter member name.">
+					</div>
+					<div class="row control-group">
+						<label>Your email</label>
+						<input type="email" class="form-control" placeholder="Type your email id" name="member_email" id="member_email" required="" data-validation-required-message="Please enter member's email address.">
+					</div>
+					<div class="row control-group">
+						<label>Your District</label>
+						<input type="text" class="form-control" id="autocomplete" autocomplete="off" placeholder="Type your district name" >
+						<input type="hidden" name="district_id" id="district_id" style="display:none"> 	
+						<div id="district_details"> </div>
+
+					</div>
 
 
-				</form>
+				</div>
+
+
+				<div class="col-md-offset-1 col-md-3">
+					{% include 'dialogues/new_dialogue_form.html'%}
+				</div>
+				<div class="col-md-offset-1 col-md-3">
+					{% include 'dialogues/new_homevisit_form.html'%}
+				</div>
+
+
 			</div>
 
+		</form>
+	</div> <!-- container-->
 
-			<div class="col-md-offset-1 col-md-3">
-				{% include 'dialogues/new_dialogue_form.html'%}
+	</section>
+
+
+	<!-- About Section -->
+	<section id="about">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 col-lg-offset-2">
+				<p>"Dialogue is an adventure, an adventure available to anyone. And sometimes it’s an adventure whose outcome can change history." - Dr Daisaku Ikeda</p>
 			</div>
-			<div class="col-md-offset-1 col-md-3">
-				{% include 'dialogues/new_homevisit_form.html'%}
-			</div>
-
-
-		</div>
-
-</div> <!-- container-->
-
-</section>
-
-
-<!-- About Section -->
-<section id="about">
-<div class="container">
-	<div class="row">
-		<div class="col-lg-8 col-lg-offset-2">
-			<p>"Dialogue is an adventure, an adventure available to anyone. And sometimes it’s an adventure whose outcome can change history." - Dr Daisaku Ikeda</p>
 		</div>
 	</div>
-</div>
-</section>
+	</section>
 
 
-<script type="text/javascript">
+	<script type="text/javascript">
 
-	$dist_name = $('#autocomplete').val;
-	$('#autocomplete').autocomplete({
-		serviceUrl: '/dialogues/ajax_get_matching_district?',
-		minLength: 4,
-		paramName: 'dist_str',
-		onSelect: function (suggestion) {
-		alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
-		}
+		function update_dist_details(selected_dist_id) 
+{
+	$.ajax({
+url: "/dialogues/ajax_get_district_summary/"+selected_dist_id+"/",
+beforeSend: function( xhr ) {
+xhr.overrideMimeType( "text/plain; charset=x-user-defined" );
+}
+}).done(function( data ) {
+	alert(selected_dist_id);
+	$("#district_details").html(data);
+	$("#district_id").val(selected_dist_id);
 	});
+}
+
+$dist_name = $('#autocomplete').val;
+var selected_dist; 
+$('#autocomplete').autocomplete({
+serviceUrl: '/dialogues/ajax_get_matching_district?',
+minLength: 4,
+paramName: 'dist_str',
+onSelect: function (suggestion) {
+//alert('You selected: ' + suggestion.value + ', ' + suggestion.data);
+selected_dist = suggestion.data;
+selected_dist_id = suggestion.id;
+$('#district_details').html("Suggestion");	
+update_dist_details(selected_dist_id);
+}
+
+
+});
 </script>
 
 

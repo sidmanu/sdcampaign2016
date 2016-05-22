@@ -149,23 +149,20 @@ def ajax_get_matching_district(request):
 		dist_json = {}
 		dist_json['value'] = '%s (Chapter: %s)'%(dist.name, dist.parent.name) 
 		dist_json['data'] = dist.name
+		dist_json['id'] = dist.id
 		suggestions.append(dist_json)
 	results['suggestions'] = suggestions
 	data = json.dumps(results)		
 	return HttpResponse(data, mimetype)
 
 
-def ajax_hv_get_district_summary(request, district_id):
+def ajax_get_district_summary(request, district_id):
 	context = {}
 	context['district_id'] = district_id
 	context['dist'] = q.get_district_by_id(district_id)
 	context['total_hv_count'] = q.get_home_visits_count_by_district_id(district_id)
-	context['month_hv_count'] = q.get_this_month_home_visits_count_by_district_id(district_id)
-	context['total_gi_count'] = q.get_guest_invites_count_by_district_id(district_id)
-	context['month_gi_count'] = q.get_this_month_guest_invites_count_by_district_id(district_id)
-	context['month_home_visit_list'] = q.get_this_month_home_visits_by_district_id(district_id)
-	context['month_guest_invite_list'] = q.get_this_month_guest_invites_by_district_id(district_id)
-	return render(request, 'dialogues/ajax_hv_district_summary.html', context)
+	context['structure'] = q.get_district_structure_string_by_id(district_id)
+	return render(request, 'dialogues/ajax_district_summary.html', context)
 
 
 def ajax_get_total_count(request):
@@ -191,58 +188,64 @@ def ajax_get_areas_in_ga(request, parent_id):
 
 	return render(request, 'dialogues/ajax_select_options.html', context)
 
-@csrf_exempt
-def ajax_submit_new_guest_invite(request):
-	context = {}
-	if request.method == 'POST':
-		dist_id = request.POST.get('district_id')
-		dist = q.get_district_by_id(request.POST.get('district_id'))
-		gi = GuestInvite(member_name=request.POST.get('member_name','dummy'),
-			friend_name=request.POST.get('friend_name','dummy_friend'),
-			member_email=request.POST.get('member_email','abc@xyz.com'),
-			district=dist, invite_date= datetime.date.today(), 
-			info=request.POST.get('info',''))
-		
-		gi.save()
-	return HttpResponseRedirect('/dialogues/ajax_hv_get_district_summary/'+dist_id+'/')
 
 @csrf_exempt
 def ajax_submit_new_home_visit(request):
 	context = {}
+	count = 0
 	if request.method == 'POST':
-		dist_id = request.POST.get('district_id')
-		dist = q.get_district_by_id(request.POST.get('district_id'))
-		hv = HomeVisit(visitor_name=request.POST.get('visitor_name','dummy'),
-			visited_name=request.POST.get('visited_name','dummy_friend'),
-			visitor_email=request.POST.get('visitor_email','abc@xyz.com'),
-			district=dist, visit_date= datetime.date.today())
-		
-		hv.save()
-	return HttpResponseRedirect('/dialogues/ajax_hv_get_district_summary/'+dist_id+'/')
+		try:
+			dist = q.get_district_by_id(request.POST.get('district_id'))
+			friends = request.POST.get('visited_name','')
+			friends = friends.split(',')
+			for friend in friends:
+				dlg = HomeVisit(visitor_name=request.POST.get('visitor_name',''),
+					visited_name=friend,
+					visitor_email=request.POST.get('visitor_email',''),
+					district=dist, visit_date = datetime.date.today())
+				
+				dlg.save()
+				count += 1
+			if count > 1:
+				context['submit_msg']='Congratulations! %d Home visits have been submitted'%(count)
+			else:
+				context['submit_msg']='Congratulations! Your Home visits has been submitted'
+			
+		except:
+			context['submit_msg'] ='Invalid data: visitor_name: %s, visited %s, district_id: %d!'%(member_name,
+				visited_name, district_id)
+
+	return render(request, 'dialogues/ajax_submit_new_home_visit_response.html', context)
+
 
 
 @csrf_exempt
 def ajax_submit_new_dialogue(request):
 	context = {}
+	count = 0
 	if request.method == 'POST':
-		are_you_human_ans = request.POST.get('are_you_human')
-		if are_you_human_ans.strip() != '9':
-			context['submit_msg'] ='Please answer the question correctly!'
-		else:
-			try:
-				dist = q.get_district_by_id(request.POST.get('district_select'))
-				dlg = Dialogue(member_name=request.POST.get('member_name','dummy'),
-					friend_name=request.POST.get('friend_name','dummy_friend'),
-					member_email=request.POST.get('member_email','abc@xyz.com'),
+		try:
+			dist = q.get_district_by_id(request.POST.get('district_id'))
+			friends = request.POST.get('friend_name','')
+			friends = friends.split(',')
+			for friend in friends:
+				dlg = Dialogue(member_name=request.POST.get('member_name',''),
+					friend_name=friend,
+					member_email=request.POST.get('member_email',''),
 					district=dist, dialogue_date = datetime.date.today())
 				
 				dlg.save()
-				context['submit_msg']='Congratulations! Your dialogue is submitted'
-			except:
-				context['submit_msg'] ='Invalid data!'
-	
-	return render(request, 'dialogues/ajax_submit_new_dialogue_response.html', context)
+				count += 1
 
+			if count > 1:
+				context['submit_msg']='Congratulations! %d Dialogues have been submitted'%(count)
+			else:
+				context['submit_msg']='Congratulations! Your dialogue has been submitted'
+		except:
+			context['submit_msg'] ='Invalid data: member_name: %s, friend_name: %s, district_id: %d!'%(member_name,
+				friend_name, district_id)
+
+	return render(request, 'dialogues/ajax_submit_new_dialogue_response.html', context)
 
 def export_dist_sheet_dialogue_list_xls(request, dist_wise_list):
 	import xlwt

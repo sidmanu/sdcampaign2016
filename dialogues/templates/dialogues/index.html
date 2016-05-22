@@ -14,11 +14,11 @@
 			<div class="row">
 				<div class="col-md-6 counter">
 					<img src="/static/dialogues/images/home.png" style="height:80px"> 
-					<div id="counter_label">Home visits: {{total_count}} </div>
+					<div id="counter_label">Home visits: {{total_dialogue_count}} </div>
 				</div>
 				<div class="col-md-6 counter">
 					<img src="/static/dialogues/images/handshake.jpg" style="height:80px"> 
-					<div id="counter_label">Dialogues: {{total_count}} </div>
+					<div id="counter_label">Dialogues: {{total_homevisit_count}} </div>
 				</div>
 
 				<div id="dialogue_submit_response_message" style="display:none;color:yellow;font-size:2em;margin-bottom:10px"> Congratulations! Your dialogue has been recorded!  </div>
@@ -96,7 +96,7 @@ beforeSend: function( xhr ) {
 xhr.overrideMimeType( "text/plain; charset=x-user-defined" );
 }
 }).done(function( data ) {
-	alert(selected_dist_id);
+	//alert(selected_dist_id);
 	$("#district_details").html(data);
 	$("#district_id").val(selected_dist_id);
 	});

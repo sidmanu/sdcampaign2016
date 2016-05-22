@@ -2,8 +2,12 @@ from dialogues.models import *
 from django.db.models import Count
 import datetime
 
-def get_total_count():
+#TODO: Make it faster. Instead of counting objects, read stats entries 
+def get_national_dialogue_count():
 	return Dialogue.objects.count()
+
+def get_national_homevisit_count():
+	return HomeVisit.objects.count()
 
 def get_daily_count_list():
 	today = datetime.date.today()
@@ -124,6 +128,11 @@ def get_dialogues_list_by_email(email):
 def get_guest_invites_count_by_district_id(district_id):
 	dist = District.objects.get(id=district_id)
 	return GuestInvite.objects.filter(district=dist).count()
+
+def get_dialogue_count_by_district_id(district_id):
+	dist = District.objects.get(id=district_id)
+	return Dialogue.objects.filter(district=dist).count()	
+
 
 def get_home_visits_count_by_district_id(district_id):
 	dist = District.objects.get(id=district_id)

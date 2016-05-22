@@ -32,8 +32,8 @@ def dist_direct_home_visit_index(request, district_id):
 
 def index(request):
 	context = {}
-	context['total_count'] = q.get_total_count()
-	context['ga_list'] = q.get_all_gas()
+	context['total_dialogue_count'] = q.get_national_dialogue_count()
+	context['total_homevisit_count'] = q.get_national_homevisit_count()
 	context['daily_count_list'] = q.get_daily_count_list()
 	return render(request, 'dialogues/index.html', context)
 
@@ -43,10 +43,10 @@ def logout_user(request):
 	logout(request)
 	return HttpResponseRedirect('/')
 
-def send_my_activities_email(email_id, dialogues, hv, gi):
+def send_my_activities_email(email_id, dialogues, hv):
 	recipients = [email_id]
-	subject = 'My Activities Summary- onelifeatatime.in'
-	sender = 'noreply@onelifeatatime.in'
+	subject = 'My Activities Summary - bodhibuddy.in'
+	sender = 'noreply@bodhibuddy.in'
 	content = """
 Dear Bodhisattva,
 
@@ -78,19 +78,7 @@ Here is your dialogue history:
 		content += line
 	
 	
-	if len(gi) == 0:
-		content += "You have no recorded guest invites!"
-	else:
-		content += "\n\nHere are the guest invites you recorded:\n\n"
-
-	count = 0
-	for d in gi:
-		count += 1
-		line = "%d) %s on %s in %s district\n"%(count, d.friend_name, str(d.invite_date),
-					d.district.name)
-		content += line
-
-	content += '\nThank You!\nonelifeatatime.in'
+	content += '\nThank You!\nbodhibuddy.in'
 	send_mail(subject, content, sender, recipients)
 
 
@@ -100,8 +88,7 @@ def my_activities(request):
 		email = request.POST['email']
 		dialogues = q.get_dialogues_list_by_email(email)
 		home_visits = q.get_home_visits_list_by_email(email)
-		guest_invites = q.get_guest_invites_list_by_email(email)
-		send_my_activities_email(email, dialogues, home_visits, guest_invites)
+		send_my_activities_email(email, dialogues, home_visits)
 		context['display_message'] = 'If entered email-id was valid, you\'ll receive an email shortly!'
 
 	return render(request, 'dialogues/my_activities.html', context)
@@ -160,7 +147,8 @@ def ajax_get_district_summary(request, district_id):
 	context = {}
 	context['district_id'] = district_id
 	context['dist'] = q.get_district_by_id(district_id)
-	context['total_hv_count'] = q.get_home_visits_count_by_district_id(district_id)
+	context['hv_count'] = q.get_home_visits_count_by_district_id(district_id)
+	context['dialogue_count'] = q.get_dialogue_count_by_district_id(district_id)
 	context['structure'] = q.get_district_structure_string_by_id(district_id)
 	return render(request, 'dialogues/ajax_district_summary.html', context)
 

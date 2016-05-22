@@ -203,6 +203,10 @@ section#about {
 	background:#001a66;
 	color:white;
 }
+section #record_new {
+	min-height:700px;
+}
+
 
 section.success a,
 section.success a:hover,
@@ -356,6 +360,7 @@ form .row:first-child .floating-label-form-group {
 
 footer {
     color: #fff;
+
 }
 
 footer h3 {

@@ -29,8 +29,16 @@
 	</header>
 
 	<h2>	{{submit_msg}} </h2>
+
+	<section id="chart">
+	<div class="container" >
+		{% include 'dialogues/chart_bar.html' %}
+
+	</div>
+	</section>
+
 	<!-- Record Dialogue Section -->
-	<section id="record_new">
+	<section>
 	<div class="container">
 		<form class="background:#0f3d88;" id="dialogue_and_hv_form">
 			<div class="row" style="margin-top:10px">
@@ -73,10 +81,9 @@
 
 	</section>
 
-
 	<!-- About Section -->
 	<section id="about">
-	<div class="container">
+	<div class="container" >
 		<div class="row">
 			<div class="col-lg-8 col-lg-offset-2">
 				<p>"Dialogue is an adventure, an adventure available to anyone. And sometimes it’s an adventure whose outcome can change history." - Dr Daisaku Ikeda</p>

@@ -1,0 +1,13 @@
+from rest_framework import serializers
+from bodhibuddyapp.models import * 
+from rest_auth.serializers import UserDetailsSerializer
+
+
+class UserSerializer(UserDetailsSerializer):
+    last_seen = serializers.DateTimeField(source="UserProfile.last_seen")
+    status= serializers.CharField(source="UserProfile.status")
+    current_state= serializers.CharField(source="UserProfile.current_state")
+
+    class Meta(UserDetailsSerializer.Meta):
+        fields = ('current_state',
+            'status','last_seen',)

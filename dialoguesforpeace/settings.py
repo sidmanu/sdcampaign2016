@@ -22,8 +22,6 @@ SECRET_KEY = '+4qkwvn)jklk*iewb+&1rqrz)@(eq1i=&yhjvagxcvis8fw4cm'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
-
 ALLOWED_HOSTS = []
 
 
@@ -35,8 +33,16 @@ INSTALLED_APPS = (
 	'django.contrib.contenttypes',
 	'django.contrib.sessions',
 	'django.contrib.messages',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration',
 	'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
 	'dialogues',
+	'bodhibuddyapp',
+    'rest_auth', 
 )
 
 MIDDLEWARE_CLASSES = (
@@ -85,4 +91,46 @@ STATIC_URL = '/static/'
 STATICFILES_DIR = (
         os.path.join(BASE_DIR, "static"),
 )
-STATIC_ROOT = '/home/ubuntu/onelifeatatime.in/dialoguesforpeace/static'
+STATIC_ROOT = '/home/ubuntu/sdcampaign.in/dialoguesforpeace/static'
+
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [
+            # insert your TEMPLATE_DIRS here
+        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                # Insert your TEMPLATE_CONTEXT_PROCESSORS here or use this
+                # list if you haven't customized them:
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
+            ],
+        },
+    },
+]
+
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+   'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.AllowAny',
+    ),
+}
+SITE_ID = 1

@@ -1,0 +1,6 @@
+These files should be placed under /etc/apache2/sites-enabled/
+
+
+Also make sure /etc/apache2/ports.conf has 443 and 80 
+
+Also make sure vi /etc/apache2/apache2.conf  is fine 

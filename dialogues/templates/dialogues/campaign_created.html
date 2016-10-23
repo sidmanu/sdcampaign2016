@@ -1,0 +1,26 @@
+{% extends 'dialogues/base.html'%}
+{% load staticfiles %}
+
+{% block title %} {{campaign.name}} Campaign has started! {% endblock %}
+
+{% block maincontent %}
+<section>
+
+	<div class="row" style="margin-top:10px">
+		<div class="col-lg-12">
+            Congratulations!!!
+
+            <br>
+            Link to your campaign
+
+            <a href="/dialogues/campaign/{{str_campaign_id}}">
+                http://bodhibuddy.in/campaign/{{str_campaign_id}}/
+                </a>
+         </div>
+    </div>
+
+</section>
+{% endblock %}
+
+	
+

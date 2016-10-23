@@ -1,0 +1,64 @@
+<div class="row" style="border:1px solid #eee; padding-right: 5px; padding-left: 5px">
+    <div class="col-md-12">
+        <div class="row" id="newDialogueRow">
+            <h4>Start your own campaign!</h4>
+        </div>
+
+    </div>
+
+    <div class="col-md-12">
+    <form method="post" action="/dialogues/create-campaign/" >
+
+        <div class="row control-group">
+            <label>New Campaign</label>
+            <input type="text" class="form-control" placeholder="Name of new campaign" name="campaign_name" id="campaign_name" required="" data-validation-required-message="Name of new campaign">
+
+            <label >Campaign type </label>
+
+            <select id="campaign_type" name="campaign_type" class="form-control">
+                <option value="daimoku">Daimoku</option>
+                <option value="home_visit">Home Visit</option>
+                <option value="dialogue">Dialogue</option>
+            </select>
+            <label>Campaign target (number)</label>
+            <input type="number" class="form-control" placeholder="Campaign goal" name="campaign_target"
+            id="campaign_target" required="" data-validation-required-message="Name of new campaign">
+
+            <label>Target unit</label>
+           <select name="campaign_unit" class="form-control">
+                <option value="minutes">Minutes</option>
+                <option value="hours">Hours</option>
+                <option value="count">Number/Count</option>
+            </select>
+
+            <label>Start date</label>
+<input type="text" name="start_date" class="form-control" id="datetimepicker1">
+            <label>Target date</label>
+<input type="text" name="target_date" class="form-control" id="datetimepicker2">
+<script type="text/javascript">
+                                    $(function () {
+                                            $('#datetimepicker1').datetimepicker({
+                                                format: 'DD-MM-YYYY'
+                                            });
+                                            $('#datetimepicker2').datetimepicker({
+                                                format: 'DD-MM-YYYY'
+                                            });
+                                        });
+                                        </script>
+
+
+        </div>
+        <div class="row control-group">
+         <input type="submit"
+            style="background:#001a66;color:white;width:100%;margin-top:8px;">
+          </div>
+
+    </form>
+
+</div>
+
+
+</div> <!-- row -->
+
+
+

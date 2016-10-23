@@ -1,0 +1,33 @@
+<div class="row" style="border:1px solid #eee; padding-right: 5px; padding-left: 5px">
+<div class="col-md-12">
+	<div class="row" id="newDialogueRow">
+		<h4>Campaigns running now!</h4>
+        <table >
+        <thead>
+        <tr> 
+            <th>Campaign Name </th>
+            <th>Type </th>
+            <th>Target </th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        {% for campaign in top_campaign_list %}
+        <tr>
+           <td> <a href="/dialogues/campaign/{{campaign.id}}/">{{campaign.name}}</a></td> 
+           <td> {{campaign.campaign_type}} </td> 
+           <td> 1 million </td> 
+           <td> 5% done</td> 
+           </tr>
+
+        {%endfor %}
+        </tbody>
+        </table>
+	</div>
+</div> <!-- column -->
+</div> <!-- row -->
+
+
+
+

@@ -1,0 +1,131 @@
+{% extends 'dialogues/base.html'%}
+{% load staticfiles %}
+
+{% block title %} {{campaign.name}} home page{% endblock %}
+
+{% block maincontent %}
+
+
+<div class="container">
+    <section>
+
+        <div class="row">
+            <div class="col-sm-12" >
+                <h4 class="text-center"> {{campaign.name}}</h4>
+                <hr class="star-primary">
+                <h3 class="text-center"> Goal: <b>{{campaign.target_value}} {{campaign.target_unit}}</b> by {{campaign.end_date}}</h3>
+
+                <p class="text-center"> Completed so far: {{total_daimoku_minutes}} minutes ({{total_daimoku_hours}}
+                hours) </p>
+
+                <p class="text-center"> Pledged daimoku : {{total_pledged_minutes}} minutes ({{total_pledged_hours}}
+                hours) </p>
+                {% if message %}
+                <div class="text-center btn btn-success">{{message}}
+                </div>
+
+                {% endif %}
+
+                <br/>
+
+            </div>
+        </div>
+
+   <div class="row">
+            <div class="col-lg-6 col-md-6">
+
+                <h4 class="text-center"> Report your completed daimoku</h4>
+                <hr class="star-primary">
+
+                <form method="post" action="/dialogues/submit-daimoku/">
+                    <div class="row control-group">
+                        <div class="form-group col-lg-6 floating-label-form-group-with-focus controls">
+                            <input type="text" class="form-control" placeholder="Contributor's Name" name="member_name" id="member_name" required="" data-validation-required-message="Enter member name.">
+                            <p class="help-block text-danger"></p>
+                        </div>
+
+                        <div class="form-group col-lg-6 floating-label-form-group-with-focus controls">
+                            <input type="email" class="form-control" placeholder="Contributor's Email" name="member_email" id="member_email" required="" data-validation-required-message="Please enter member's email address.">
+                            <p class="help-block text-danger"></p>
+                        </div>
+
+                        <div class="form-group col-lg-6 floating-label-form-group-with-focus controls">
+                            <input type="number" class="form-control" placeholder="My contribution in minutes"
+                            name="daimoku_minutes" min="1" max="720" required=""
+                            data-validation-required-message="Please enter number of minutes you chanted today">
+                            <p class="help-block text-danger"></p>
+                        </div>
+
+                        <input type="hidden" name="campaign_id" value="{{campaign.id}}">
+
+                        <div class="form-group col-lg-6 floating-label-form-group-with-focus controls">
+                            <input type="submit" class="btn btn-success center"
+                            value="Submit">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+
+<div class="col-lg-6 col-md-6">
+
+                <h4 class="text-center"> Pledge - make a commitment to chant!</h4>
+                <hr class="star-primary">
+    <form method="post" action="/dialogues/submit-daimoku-commitment/">
+        <div class="row control-group">
+            <div class="form-group col-lg-6 floating-label-form-group-with-focus controls">
+                <input type="text" class="form-control" placeholder="Your Name" name="member_name" id="member_name" required="" data-validation-required-message="Enter member name.">
+                <p class="help-block text-danger"></p>
+            </div>
+
+            <div class="form-group col-lg-6 floating-label-form-group-with-focus controls">
+                <input type="email" class="form-control" placeholder="Your Email" name="member_email" id="member_email" required="" data-validation-required-message="Please enter member's email address.">
+                <p class="help-block text-danger"></p>
+            </div>
+
+            <div class="form-group col-lg-6 floating-label-form-group-with-focus controls">
+                <input type="number" class="form-control" placeholder="Minutes of daimoku you pledge"
+                name="daimoku_minutes" min="1" max="720" required=""
+                data-validation-required-message="Please enter your pledged daimoku minutes till the target date">
+                <p class="help-block text-danger"></p>
+            </div>
+
+            <input type="hidden" name="campaign_id" value="{{campaign.id}}">
+
+            <div class="form-group col-lg-6 floating-label-form-group-with-focus controls">
+                <input type="submit" class="btn btn-success center"
+                value="Submit">
+            </div>
+        </div>
+    </form>
+
+</div>
+    </div> <!-- row -->
+        <div class="row">
+<div class="col-sm-6">
+    <h4> Recent contributions</h4>
+    <ul>
+        {% for contrib in contributions %}
+        <li> {{contrib.member_name}} - {{contrib.duration_minutes}} minutes on {{contrib.daimoku_date}}</li>
+        {% endfor %}
+    </ul>
+
+</div>
+<div class="col-sm-6">
+    <h4> Recently Pledged</h4>
+    <ul>
+        {% for contrib in pledges %}
+        <li> {{contrib.member_name}} - {{contrib.duration_minutes}} minutes on {{contrib.committed_on_date}}</li>
+        {% endfor %}
+    </ul>
+
+</div>
+ 
+        </div>
+
+
+
+    </section>
+
+</div> <!-- container -->
+{% endblock %}

@@ -4,6 +4,11 @@ from . import views
 
 urlpatterns = [
 	url(r'^$', views.index, name = 'index'),
+	url(r'^create-campaign/$', views.create_campaign),
+	url(r'^submit-daimoku/$', views.submit_daimoku),
+	url(r'^submit-daimoku-commitment/$', views.submit_daimoku_commitment),
+	url(r'^campaign/(?P<campaign_id>\d+)/$', views.campaign_index),
+	url(r'^rest/$', views.DialogueView.as_view()),
 	url(r'hv/$', views.home_visit_index, name = 'home_visit_index'),
 	url(r'hv/dist/(?P<district_id>\d+)/$', views.dist_direct_home_visit_index),
 	url(r'^ajax_submit_new_home_visit/$', views.ajax_submit_new_home_visit),

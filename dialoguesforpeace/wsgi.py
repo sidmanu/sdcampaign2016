@@ -8,7 +8,7 @@ https://docs.djangoproject.com/en/1.7/howto/deployment/wsgi/
 """
 
 import os, sys
-sys.path.append('/home/ubuntu/onelifeatatime.in/dialoguesforpeace')
+sys.path.append('/home/ubuntu/sdcampaign.in/dialoguesforpeace')
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "dialoguesforpeace.settings")
 
 from django.core.wsgi import get_wsgi_application
